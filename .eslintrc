@@ -1,0 +1,28 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": ["airbnb", "plugin:prettier/recommended"],
+
+  "rules": {
+    // Allow single Named-export
+    "import/prefer-default-export": "off",
+
+    // Set react-hooks lint as error
+    "react-hooks/rules-of-hooks": "error",
+
+    // Allow storybook import
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [".storybook/**", "stories/**", "**/*.stories.js"]
+      }
+    ],
+
+    // Allow react elements in stories.js
+    "react/jsx-filename-extension": [
+      "error",
+      { "extensions": [".stories.js", ".jsx"] }
+    ]
+  }
+}

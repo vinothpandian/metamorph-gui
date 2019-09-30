@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  metamorph-gui:
+    image: metamorph-gui
+    build: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 5000
+    command: serve -s build
