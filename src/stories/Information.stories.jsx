@@ -1,14 +1,14 @@
 import { storiesOf } from "@storybook/react";
 
 import React from "react";
-import {  Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Information from "../components/Information";
 
 const Text = () => {
   return (
     <p>
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-      Lorem Ipsum has been the industry's standard dummy
+      Lorem Ipsum has been the industry&#39;s standard dummy
     </p>
   );
 };

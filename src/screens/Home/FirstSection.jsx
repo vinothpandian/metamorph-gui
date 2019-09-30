@@ -7,7 +7,7 @@ import DisplayImage from "../../components/DisplayImage";
 import Information from "../../components/Information";
 import InfoButton from "../../components/InfoButton";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     height: "100%"
   },
@@ -38,7 +38,7 @@ const FirstSection = () => {
               <span className={styles.secondaryText}>simply </span>
               <span>
                 dummy text of the printing and typesetting industry. Lorem Ipsum
-                has been the industry's
+                has been the industry&#39;s
               </span>
               <span className={styles.primaryText}> standard dummy</span>
             </Information>

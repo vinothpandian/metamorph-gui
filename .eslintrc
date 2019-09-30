@@ -2,6 +2,7 @@
   "env": {
     "browser": true
   },
+  "plugins": ["react-hooks"],
   "extends": ["airbnb", "plugin:prettier/recommended"],
 
   "rules": {
@@ -9,15 +10,18 @@
     "import/prefer-default-export": "off",
 
     // Set react-hooks lint as error
-    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
 
     // Allow storybook import
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": [".storybook/**", "stories/**", "**/*.stories.js"]
+        "devDependencies": [".storybook/**", "**/stories/**", "**/*.stories.js"]
       }
     ],
+    // Allow prop spreading
+    "react/jsx-props-no-spreading": "off",
 
     // Allow react elements in stories.js
     "react/jsx-filename-extension": [

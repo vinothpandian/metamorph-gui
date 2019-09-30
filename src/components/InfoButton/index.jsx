@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import Button from "@material-ui/core/Button";
 
 import { makeStyles } from "@material-ui/styles";
@@ -22,6 +24,10 @@ const InfoButton = ({ children, ...buttonProps }) => {
       {children}
     </Button>
   );
+};
+
+InfoButton.propTypes = {
+  children: PropTypes.node.isRequired
 };
 
 export default InfoButton;

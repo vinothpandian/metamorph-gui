@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/styles";
 
@@ -34,6 +36,19 @@ const SectionContainer = ({
       {children}
     </Container>
   );
+};
+
+SectionContainer.defaultProps = {
+  solidBackground: "#FFF",
+  fullPage: false,
+  gradientBackground: false
+};
+
+SectionContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+  gradientBackground: PropTypes.bool,
+  solidBackground: PropTypes.string,
+  fullPage: PropTypes.bool
 };
 
 export default SectionContainer;

@@ -2,7 +2,7 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import SectionContainer from "../components/SectionContainer";
 
-const FullPageStory = (story) => {
+const FullPageStory = story => {
   return (
     <SectionContainer fullPage>
       <Grid

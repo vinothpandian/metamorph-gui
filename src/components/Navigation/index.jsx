@@ -31,11 +31,7 @@ const Navigation = () => {
             <Menu />
           </IconButton>
         </Box>
-        <Box
-          display={["none", "none", "none", "flex"]}
-          fontSize="1.5rem"
-          fontWeight="light"
-        >
+        <Box display={["none", "none", "none", "flex"]} fontSize="1.5rem">
           <Link exact to="/try-it-out">
             Try it out!
           </Link>
@@ -52,7 +48,6 @@ const Navigation = () => {
           pb="1rem"
           flexDirection="column"
           fontSize={["1.25rem", "1.5rem"]}
-          fontWeight="light"
         >
           <Link onClick={toggleNav} exact to="/try-it-out">
             Try it out!

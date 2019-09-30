@@ -6,7 +6,7 @@ import SectionContainer from "../../components/SectionContainer";
 import Information from "../../components/Information";
 import InfoButton from "../../components/InfoButton";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     height: "100%"
   },

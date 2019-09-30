@@ -1,9 +1,11 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { Grid } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     position: "relative"
   },
@@ -11,8 +13,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "auto"
   }
-}));
-
+});
 
 const DisplayImage = ({ Image, alt }) => {
   const styles = useStyles();
@@ -22,6 +23,11 @@ const DisplayImage = ({ Image, alt }) => {
       <Image title={alt} className={styles.responsive} />
     </Grid>
   );
+};
+
+DisplayImage.propTypes = {
+  Image: PropTypes.elementType.isRequired,
+  alt: PropTypes.string.isRequired
 };
 
 export default DisplayImage;
