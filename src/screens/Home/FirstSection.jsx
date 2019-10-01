@@ -36,10 +36,14 @@ const FirstSection = () => {
             </Grid>
             <Grid item xs={10} container justify="space-around" spacing={2}>
               <Grid item xs={6} lg={4}>
-                <InfoButton variant="contained">Try it out!</InfoButton>
+                <InfoButton to="/try-it-out" variant="contained">
+                  Try it out!
+                </InfoButton>
               </Grid>
               <Grid item xs={6} lg={4}>
-                <InfoButton variant="outlined">Contribute</InfoButton>
+                <InfoButton to="/contribute" variant="outlined">
+                  Contribute
+                </InfoButton>
               </Grid>
             </Grid>
           </Grid>

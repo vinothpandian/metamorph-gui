@@ -1,12 +1,12 @@
 import React from "react";
 import FirstSection from "./FirstSection";
-import SecondSection from "./SecondSection";
+// import SecondSection from "./SecondSection";
 
 const Home = () => {
   return (
     <>
       <FirstSection />
-      <SecondSection />
+      {/* <SecondSection /> */}
     </>
   );
 };
