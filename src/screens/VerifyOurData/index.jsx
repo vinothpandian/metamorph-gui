@@ -8,20 +8,13 @@ import {
   ListItemText,
   ListItemIcon
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
 import LaunchOutlinedIcon from "@material-ui/icons/LaunchOutlined";
 
 import WordCloudImage from "../../assets/images/wordcloud.svg";
 import SectionContainer from "../../components/SectionContainer";
 import DisplayImage from "../../components/DisplayImage";
 import Information from "../../components/Information";
-import { useGridStyles } from "../../styles";
-
-const useStyles = makeStyles({
-  root: {
-    height: "100%"
-  }
-});
+import { useGridStyles, useEmphasisStyles } from "../../styles";
 
 const links = [
   {
@@ -52,8 +45,8 @@ const list = links.map(link => (
 ));
 
 const VerifyOurData = () => {
-  const styles = useStyles();
   const gridStyles = useGridStyles();
+  const emphasisStyles = useEmphasisStyles();
 
   return (
     <SectionContainer>
@@ -63,8 +56,10 @@ const VerifyOurData = () => {
             <Grid item xs={10}>
               <Information>
                 <span>Verify our </span>
-                <span className={styles.secondaryText}>UI Sketch Dataset </span>
-                <span>by </span>
+                <span className={emphasisStyles.primaryEmphasis}>
+                  UI Sketch Dataset
+                </span>
+                <span> by </span>
                 <List dense>{list}</List>
               </Information>
             </Grid>
