@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
 
-RUN yarn
+RUN yarn --production false
 RUN yarn global add serve
 
 COPY . .
