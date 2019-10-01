@@ -19,7 +19,7 @@ const DisplayImage = ({ Image, alt }) => {
   const styles = useStyles();
 
   return (
-    <Grid item className={styles.root} xs={10} md={6}>
+    <Grid item className={styles.root} xs={10} md={8}>
       <Image title={alt} className={styles.responsive} />
     </Grid>
   );
