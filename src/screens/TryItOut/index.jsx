@@ -7,6 +7,7 @@ import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye";
 import clsx from "clsx";
 import { green } from "@material-ui/core/colors";
 import Axios from "axios";
+import domToImage from "dom-to-image";
 import SectionContainer from "../../components/SectionContainer";
 import Information from "../../components/Information";
 import InfoButton from "../../components/InfoButton";
@@ -14,6 +15,7 @@ import { useGridStyles, useEmphasisStyles } from "../../styles";
 
 import sample0 from "../../assets/images/samples/lofi-0.jpg";
 import sample1 from "../../assets/images/samples/lofi-1.jpg";
+import DetectionBox from "../../components/DetectionBox";
 
 const useStyles = makeStyles(theme => ({
   sketchGrid: {
@@ -52,26 +54,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function getDataBlob(image, imageType) {
-  return new Promise((resolve, reject) => {
-    try {
-      const img = document.createElement("img");
-      img.src = image;
-
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.setAttribute("width", img.naturalWidth);
-        canvas.setAttribute("height", img.naturalHeight);
-        canvas.getContext("2d").drawImage(img, 0, 0);
-
-        resolve(canvas.toDataURL(`image/${imageType}`));
-      };
-    } catch (e) {
-      reject(e);
-    }
-  });
-}
-
 const TryItOut = () => {
   const styles = useStyles();
   const gridStyles = useGridStyles();
@@ -80,12 +62,18 @@ const TryItOut = () => {
   const samples = [sample0, sample1];
   const [sample, setSample] = React.useState(0);
 
-  const loadNextImage = () => {
-    setSample(Math.ceil((sample + 1) % samples.length));
-  };
+  const imageRef = React.useRef(null);
+  const boxRef = React.useRef(null);
 
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
+
+  const [boxes, setBoxes] = React.useState([]);
+
+  const loadNextImage = () => {
+    setBoxes([]);
+    setSample(Math.ceil((sample + 1) % samples.length));
+  };
 
   const buttonClassname = clsx({
     [styles.buttonSuccess]: success
@@ -97,7 +85,7 @@ const TryItOut = () => {
     setSuccess(false);
     setLoading(true);
 
-    const dataURI = await getDataBlob(samples[sample], "jpeg");
+    const dataURI = await domToImage.toJpeg(imageRef.current);
     const blob = await (await fetch(dataURI)).blob();
     const fileData = new File([blob], samples[sample]);
 
@@ -121,7 +109,22 @@ const TryItOut = () => {
         throw err;
       });
 
-    console.log(results);
+    const imageRect = imageRef.current.getBoundingClientRect();
+    const boxRect = boxRef.current.getBoundingClientRect();
+
+    const verticalOffset = imageRect.top - boxRect.top;
+    const horizontalOffset = imageRect.left - boxRect.left;
+
+    setBoxes(
+      results.map(result => (
+        <DetectionBox
+          key={`${result.name}_${result.position.x}`}
+          verticalOffset={verticalOffset}
+          horizontalOffset={horizontalOffset}
+          {...result}
+        />
+      ))
+    );
 
     setSuccess(true);
     setLoading(false);
@@ -175,8 +178,8 @@ const TryItOut = () => {
             <Box
               position="absolute"
               border="1px solid #000"
-              height={["70%", "50%", "70%"]}
-              width={["45%", "45%", "45%", "40%"]}
+              height={["70%", "50%", "50%", "70%"]}
+              width={["45%", "50%", "45%", "40%"]}
               style={{ transform: "skew(0.695deg, 1.42deg)" }}
               bgcolor="grey.A200"
               className={styles.shadow}
@@ -184,18 +187,21 @@ const TryItOut = () => {
             <Box
               position="absolute"
               border="1px solid #000"
-              height={["65%", "45%", "65%"]}
+              height={["65%", "45%", "45%", "65%"]}
               m={-0.25}
               width={["40%", "40%", "40%", "35%"]}
               bgcolor="white"
               display="flex"
               justifyContent="center"
+              ref={boxRef}
             >
               <img
                 className={styles.image}
+                ref={imageRef}
                 src={samples[sample]}
                 alt="Sample Lo-Fi sketch"
               />
+              {boxes}
             </Box>
             <Box position="absolute" bottom={["5%", "15%", "5%"]}>
               <Grid container justify="space-around" spacing={2}>
