@@ -1,5 +1,15 @@
 import React from "react";
-import { Grid, Box, Button, CircularProgress } from "@material-ui/core";
+import {
+  Grid,
+  Box,
+  Button,
+  CircularProgress,
+  Link,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import LaunchOutlinedIcon from "@material-ui/icons/LaunchOutlined";
 import LoopIcon from "@material-ui/icons/Loop";
@@ -10,7 +20,6 @@ import Axios from "axios";
 import domToImage from "dom-to-image";
 import SectionContainer from "../../components/SectionContainer";
 import Information from "../../components/Information";
-import InfoButton from "../../components/InfoButton";
 import { useGridStyles, useEmphasisStyles } from "../../styles";
 
 import sample0 from "../../assets/images/samples/lofi-0.jpg";
@@ -53,6 +62,29 @@ const useStyles = makeStyles(theme => ({
     marginLeft: -12
   }
 }));
+
+const links = [
+  {
+    id: 1,
+    href: "https://git.designwitheve.com/eve/MetaMorph",
+    name: "Check our code repository"
+  }
+];
+
+const list = links.map(link => (
+  <ListItem key={link.id}>
+    <ListItemIcon>
+      <LaunchOutlinedIcon />
+    </ListItemIcon>
+    <ListItemText>
+      <Information>
+        <Link rel="noopener" target="_blank" color="secondary" href={link.href}>
+          {link.name}
+        </Link>
+      </Information>
+    </ListItemText>
+  </ListItem>
+));
 
 const TryItOut = () => {
   const styles = useStyles();
@@ -131,40 +163,20 @@ const TryItOut = () => {
   }, [loading, sample, samples]);
 
   return (
-    <SectionContainer gradientBackground>
+    <SectionContainer>
       <Box className={gridStyles.gridContainer}>
         <Box className={gridStyles.leftPane}>
           <Grid container spacing={4} justify="center" alignItems="center">
             <Grid item xs={10}>
               <Information>
-                <span className={emphasisStyles.secondaryEmphasis}>Sketch</span>
-                <span>
-                  {" "}
-                  your low fidelity screen and let MetaMorph detect the
-                  constituent
-                </span>
+                <span>Sketch your low fidelity screen and let</span>
                 <span className={emphasisStyles.primaryEmphasis}>
                   {" "}
-                  UI elements
+                  MetaMorph
                 </span>
+                <span> detect the constituent UI elements</span>
+                <List dense>{list}</List>
               </Information>
-            </Grid>
-            <Grid item xs={10} container justify="space-around" spacing={2}>
-              <Grid item xs={6} lg={4} container alignItems="center">
-                <InfoButton
-                  variant="contained"
-                  href="https://git.designwitheve.com/eve/MetaMorph"
-                >
-                  Repository
-                  <LaunchOutlinedIcon
-                    className={styles.rightIcon}
-                    fontSize="small"
-                  />
-                </InfoButton>
-              </Grid>
-              <Grid item xs={6} lg={4}>
-                {/* <InfoButton variant="contained">Detect!</InfoButton> */}
-              </Grid>
             </Grid>
           </Grid>
         </Box>

@@ -56,7 +56,7 @@ const Contribute = () => {
   const gridStyles = useGridStyles();
 
   return (
-    <SectionContainer gradientBackground>
+    <SectionContainer>
       <Box className={gridStyles.gridContainer}>
         <Box className={gridStyles.leftPane}>
           <Grid container spacing={4} justify="center" alignItems="center">
@@ -74,7 +74,7 @@ const Contribute = () => {
           <DisplayImage
             Image={ContributeImage}
             type="others"
-            alt="UI Components"
+            alt="UI elements"
           />
         </Box>
       </Box>
