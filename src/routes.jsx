@@ -5,6 +5,7 @@ import Home from "./screens/Home";
 import TryItOut from "./screens/TryItOut";
 import Contribute from "./screens/Contribute";
 import VerifyOurData from "./screens/VerifyOurData";
+import AboutUs from "./screens/AboutUs";
 
 function Routes() {
   return (
@@ -13,6 +14,7 @@ function Routes() {
       <Route exact path="/try-it-out" component={TryItOut} />
       <Route exact path="/contribute" component={Contribute} />
       <Route exact path="/verify-our-data" component={VerifyOurData} />
+      <Route exact path="/about-us" component={AboutUs} />
       <Route component={Error} />
     </Switch>
   );
