@@ -127,15 +127,11 @@ const TryItOut = () => {
     formData.append("image", fileData);
     formData.append("minimum_probability", minimumProbability);
 
-    const results = await Axios.post(
-      "http://127.0.0.1:3040/predict",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
+    const results = await Axios.post(process.env.REACT_APP_URL, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
       }
-    )
+    })
       .then(response => response.data)
       .catch(err => {
         throw err;
