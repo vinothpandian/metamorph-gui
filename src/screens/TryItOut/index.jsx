@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Box, Button, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import LinkOutlinedIcon from "@material-ui/icons/LinkOutlined";
+import LaunchOutlinedIcon from "@material-ui/icons/LaunchOutlined";
 import LoopIcon from "@material-ui/icons/Loop";
 import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye";
 import clsx from "clsx";
@@ -156,7 +156,7 @@ const TryItOut = () => {
                   href="https://git.designwitheve.com/eve/MetaMorph"
                 >
                   Repository
-                  <LinkOutlinedIcon
+                  <LaunchOutlinedIcon
                     className={styles.rightIcon}
                     fontSize="small"
                   />

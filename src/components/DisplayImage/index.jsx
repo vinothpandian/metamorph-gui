@@ -15,18 +15,27 @@ const useStyles = makeStyles({
   }
 });
 
-const DisplayImage = ({ Image, alt }) => {
+const DisplayImage = ({ Image, alt, type }) => {
   const styles = useStyles();
 
+  if (type === "svg") {
+    return (
+      <Grid item className={styles.root} xs={10}>
+        <Image title={alt} className={styles.responsive} />
+      </Grid>
+    );
+  }
+
   return (
-    <Grid item className={styles.root} xs={10} md={8}>
-      <Image title={alt} className={styles.responsive} />
+    <Grid item className={styles.root} xs={10}>
+      <img alt={alt} src={Image} className={styles.responsive} />
     </Grid>
   );
 };
 
 DisplayImage.propTypes = {
   Image: PropTypes.elementType.isRequired,
+  type: PropTypes.oneOf(["svg", "others"]).isRequired,
   alt: PropTypes.string.isRequired
 };
 

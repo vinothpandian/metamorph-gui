@@ -8,11 +8,11 @@ import Information from "../../components/Information";
 import InfoButton from "../../components/InfoButton";
 import { useGridStyles } from "../../styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     height: "100%"
   }
-}));
+});
 
 const FirstSection = () => {
   const styles = useStyles();
@@ -49,7 +49,7 @@ const FirstSection = () => {
           </Grid>
         </Box>
         <Box className={gridStyles.rightPane}>
-          <DisplayImage Image={HomeImage} alt="UI Components" />
+          <DisplayImage Image={HomeImage} type="svg" alt="UI Components" />
         </Box>
       </Box>
     </SectionContainer>
