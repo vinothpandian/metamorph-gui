@@ -6,6 +6,7 @@ import LoopIcon from "@material-ui/icons/Loop";
 import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye";
 import clsx from "clsx";
 import { green } from "@material-ui/core/colors";
+import Axios from "axios";
 import SectionContainer from "../../components/SectionContainer";
 import Information from "../../components/Information";
 import InfoButton from "../../components/InfoButton";
@@ -85,28 +86,46 @@ const TryItOut = () => {
 
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
-  const timer = React.useRef();
 
   const buttonClassname = clsx({
     [styles.buttonSuccess]: success
   });
 
-  React.useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
+  const handleButtonClick = React.useCallback(async () => {
+    if (loading) return;
 
-  const handleButtonClick = () => {
-    if (!loading) {
-      setSuccess(false);
-      setLoading(true);
-      timer.current = setTimeout(() => {
-        setSuccess(true);
-        setLoading(false);
-      }, 2000);
-    }
-  };
+    setSuccess(false);
+    setLoading(true);
+
+    const dataURI = await getDataBlob(samples[sample], "jpeg");
+    const blob = await (await fetch(dataURI)).blob();
+    const fileData = new File([blob], samples[sample]);
+
+    const minimumProbability = 0.8;
+    const formData = new FormData();
+
+    formData.append("image", fileData);
+    formData.append("minimum_probability", minimumProbability);
+
+    const results = await Axios.post(
+      "http://127.0.0.1:3040/predict",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    )
+      .then(response => response.data)
+      .catch(err => {
+        throw err;
+      });
+
+    console.log(results);
+
+    setSuccess(true);
+    setLoading(false);
+  }, [loading, sample, samples]);
 
   return (
     <SectionContainer gradientBackground>
