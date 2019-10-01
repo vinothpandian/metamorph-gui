@@ -11,12 +11,6 @@ import { useGridStyles } from "../../styles";
 import phone from "../../assets/images/home-phone.svg";
 import UI from "../../assets/images/home-ui.svg";
 
-// `xs, extra-small: 0px
-// sm, small: 600px
-// md, medium: 960px
-// lg, large: 1280px
-// xl, extra-large: 1920px`
-
 const off = {
   xl: [70, 80],
   lg: [60, 70],
