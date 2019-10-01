@@ -7,7 +7,7 @@ import { RouterNavLink as RouterLink } from "../RouterLink";
 
 const useStyles = makeStyles(theme => ({
   link: {
-    fontWeight: 200,
+    fontWeight: 400,
     paddingRight: "2rem",
     "&:hover": {
       color: theme.palette.secondary.main

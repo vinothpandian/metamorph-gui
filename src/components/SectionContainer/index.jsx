@@ -39,7 +39,7 @@ const SectionContainer = ({
 };
 
 SectionContainer.defaultProps = {
-  solidBackground: "#FFF",
+  solidBackground: undefined,
   fullPage: false,
   gradientBackground: false
 };

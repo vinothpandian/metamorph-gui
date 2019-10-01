@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   common: {
     fontFamily: "Roboto Mono",
     fontSize: "2.5rem",
-    fontWeight: 100
+    fontWeight: 300
   },
   meta: {
     paddingLeft: theme.spacing(2),
