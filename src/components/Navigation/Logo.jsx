@@ -8,8 +8,8 @@ import { RouterNavLink } from "../RouterLink";
 const useStyles = makeStyles(theme => ({
   common: {
     fontFamily: "Roboto Mono",
-    fontSize: "2.5rem",
-    fontWeight: 300
+    fontSize: "3rem",
+    fontWeight: 100
   },
   meta: {
     paddingLeft: theme.spacing(2),
