@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/styles";
 const useStyles = makeStyles(theme => ({
   root: ({ gradientBackground, solidBackground, fullPage }) => ({
     overflow: "hidden",
-    height: fullPage ? "100vh" : "calc(100vh - 4.75rem)",
+    height: fullPage ? "100vh" : "calc(100vh - 5.5rem)",
     background: gradientBackground
       ? `linear-gradient(
       180deg,

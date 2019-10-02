@@ -19,7 +19,7 @@ function Error() {
   const styles = useStyles();
 
   return (
-    <SectionContainer>
+    <SectionContainer gradientBackground>
       <Grid
         container
         className={styles.root}

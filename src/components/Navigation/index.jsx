@@ -33,11 +33,11 @@ const Navigation = () => {
         </Box>
         <Box display={["none", "none", "none", "flex"]} fontSize="1.5rem">
           <Link exact to="/try-it-out">
-            Try it out!
+            Try out!
           </Link>
           <Link to="/contribute">Contribute</Link>
-          <Link to="/verify-our-data">Verify our data</Link>
-          <Link to="/about-us">About Us</Link>
+          <Link to="/verify-our-data">Verify data</Link>
+          <Link to="/about-us">About us</Link>
         </Box>
       </Box>
       <Collapse in={showNav}>
@@ -50,16 +50,16 @@ const Navigation = () => {
           fontSize={["1.25rem", "1.5rem"]}
         >
           <Link onClick={toggleNav} exact to="/try-it-out">
-            Try it out!
+            Try out!
           </Link>
           <Link onClick={toggleNav} to="/contribute">
             Contribute
           </Link>
           <Link onClick={toggleNav} to="/verify-our-data">
-            Verify our data
+            Verify data
           </Link>
           <Link onClick={toggleNav} to="/about-us">
-            About Us
+            About us
           </Link>
         </Box>
       </Collapse>
