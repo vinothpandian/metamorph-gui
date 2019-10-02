@@ -159,7 +159,7 @@ const TryItOut = () => {
   }, [loading, sample, samples]);
 
   return (
-    <SectionContainer>
+    <SectionContainer gradientBackground>
       <Box className={gridStyles.gridContainer}>
         <Box className={gridStyles.leftPane}>
           <Grid container spacing={4} justify="center" alignItems="center">
@@ -189,7 +189,7 @@ const TryItOut = () => {
               height={["70%", "50%", "50%", "70%"]}
               width={["45%", "50%", "45%", "40%"]}
               style={{ transform: "skew(0.695deg, 1.42deg)" }}
-              bgcolor="grey.A200"
+              // bgcolor="grey.A200"
               className={styles.shadow}
             />
             <Box
@@ -219,7 +219,7 @@ const TryItOut = () => {
                     variant="outlined"
                     onClick={loadNextImage}
                   >
-                    Load a sample
+                    Load sample
                     <LoopIcon className={styles.rightIcon} size="small" />
                   </Button>
                 </Grid>

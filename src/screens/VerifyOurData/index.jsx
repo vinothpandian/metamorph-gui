@@ -49,7 +49,7 @@ const VerifyOurData = () => {
   const emphasisStyles = useEmphasisStyles();
 
   return (
-    <SectionContainer>
+    <SectionContainer gradientBackground>
       <Box className={gridStyles.gridContainer}>
         <Box className={gridStyles.leftPane}>
           <Grid container spacing={4} justify="center" alignItems="center">
