@@ -1,17 +1,7 @@
 import React from "react";
-import {
-  Grid,
-  Box,
-  Button,
-  CircularProgress,
-  Link,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon
-} from "@material-ui/core";
+import { Grid, Box, CircularProgress, Tooltip } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/styles";
-import LaunchOutlinedIcon from "@material-ui/icons/LaunchOutlined";
 import LoopIcon from "@material-ui/icons/Loop";
 import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye";
 import clsx from "clsx";
@@ -25,24 +15,46 @@ import { useGridStyles, useEmphasisStyles } from "../../styles";
 import sample0 from "../../assets/images/samples/lofi-0.jpg";
 import sample1 from "../../assets/images/samples/lofi-1.jpg";
 import DetectionBox from "../../components/DetectionBox";
+import ListLinks from "../../components/ListLinks";
 
 const useStyles = makeStyles(theme => ({
   sketchGrid: {
     height: "100%",
-    position: "relative"
+    width: "100%",
+    display: "grid",
+    gridTemplateColumns: "1fr 1.5fr 0.5fr 1fr",
+    gridTemplateRows: "1fr",
+    [theme.breakpoints.down("sm")]: {
+      gridTemplateColumns: "1fr 2fr 1fr 1fr"
+    },
+
+    gridTemplateAreas: '". sketchArea buttonArea ."'
   },
-  rightIcon: {
-    marginLeft: theme.spacing(1)
+  sketchArea: {
+    gridArea: "sketchArea",
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
-  button: {
-    marginRight: theme.spacing(1)
+  buttonArea: {
+    gridArea: "buttonArea",
+    position: "relative",
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center"
+  },
+  iconButton: {
+    fontSize: "0.25rem",
+    border: "1px solid #aaa"
   },
   shadow: {
     boxShadow: "0px 0.875rem 0.875rem rgba(0,0,0,0.25)"
   },
   image: {
-    width: "auto",
-    height: "100%"
+    borderRadius: "0.875rem",
+    width: "100%",
+    height: "auto"
   },
   wrapper: {
     position: "relative"
@@ -56,10 +68,9 @@ const useStyles = makeStyles(theme => ({
   buttonProgress: {
     color: green[500],
     position: "absolute",
-    top: "50%",
-    left: "50%",
-    marginTop: -12,
-    marginLeft: -12
+    top: -6,
+    left: -6,
+    zIndex: 1
   }
 }));
 
@@ -70,21 +81,6 @@ const links = [
     name: "Check our code repository"
   }
 ];
-
-const list = links.map(link => (
-  <ListItem key={link.id}>
-    <ListItemIcon>
-      <LaunchOutlinedIcon />
-    </ListItemIcon>
-    <ListItemText>
-      <Information>
-        <Link rel="noopener" target="_blank" color="secondary" href={link.href}>
-          {link.name}
-        </Link>
-      </Information>
-    </ListItemText>
-  </ListItem>
-));
 
 const TryItOut = () => {
   const styles = useStyles();
@@ -165,87 +161,91 @@ const TryItOut = () => {
           <Grid container spacing={4} justify="center" alignItems="center">
             <Grid item xs={10}>
               <Information>
-                <span>Sketch your low fidelity screen and let</span>
+                <span>
+                  Sketch your low fidelity screen or try loading our sample
+                  screen and let
+                </span>
                 <span className={emphasisStyles.primaryEmphasis}>
                   {" "}
                   MetaMorph
                 </span>
                 <span> detect the constituent UI elements</span>
-                <List dense>{list}</List>
+                <ListLinks links={links} />
               </Information>
             </Grid>
           </Grid>
         </Box>
         <Box className={gridStyles.rightPane}>
-          <Grid
-            className={styles.sketchGrid}
-            container
-            justify="center"
-            alignItems="center"
-          >
-            <Box
-              position="absolute"
-              border="1px solid #000"
-              height={["70%", "50%", "50%", "70%"]}
-              width={["45%", "50%", "45%", "40%"]}
-              style={{ transform: "skew(0.695deg, 1.42deg)" }}
-              // bgcolor="grey.A200"
-              className={styles.shadow}
-            />
-            <Box
-              position="absolute"
-              border="1px solid #000"
-              height={["65%", "45%", "45%", "65%"]}
-              m={-0.25}
-              width={["40%", "40%", "40%", "35%"]}
-              bgcolor="white"
-              display="flex"
-              justifyContent="center"
-              ref={boxRef}
-            >
-              <img
-                className={styles.image}
-                ref={imageRef}
-                src={samples[sample]}
-                alt="Sample Lo-Fi sketch"
+          <Box className={styles.sketchGrid}>
+            <Box className={styles.sketchArea}>
+              <Box
+                position="absolute"
+                border="1px solid #000"
+                height={["70%", "50%", "50%", "70%"]}
+                width="100%"
+                borderRadius="0.875rem"
+                style={{ transform: "rotate(-0.2deg)" }}
+                className={styles.shadow}
               />
-              {boxes}
+              <Box
+                position="absolute"
+                border="1px solid #000"
+                height={["65%", "45%", "45%", "65%"]}
+                m={-0.25}
+                width="90%"
+                borderRadius="0.875rem"
+                bgcolor="white"
+                display="flex"
+                justifyContent="center"
+                ref={boxRef}
+              >
+                <img
+                  className={styles.image}
+                  ref={imageRef}
+                  src={samples[sample]}
+                  alt="Sample Lo-Fi sketch"
+                />
+                {boxes}
+              </Box>
             </Box>
-            <Box position="absolute" bottom={["5%", "15%", "5%"]}>
-              <Grid container justify="space-around" spacing={2}>
-                <Grid item>
-                  <Button
-                    className={styles.button}
-                    variant="outlined"
-                    onClick={loadNextImage}
-                  >
-                    Load sample
-                    <LoopIcon className={styles.rightIcon} size="small" />
-                  </Button>
+            <Box className={styles.buttonArea}>
+              <Box
+                position="absolute"
+                height={["70%", "50%", "50%", "70%"]}
+                width="100%"
+              >
+                <Grid container justify="flex-end" spacing={2}>
+                  <Grid item>
+                    <Tooltip title="Load a sample">
+                      <IconButton
+                        onClick={loadNextImage}
+                        className={styles.iconButton}
+                      >
+                        <LoopIcon size="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </Grid>
+                  <Grid item className={styles.wrapper}>
+                    <Tooltip title="Detect">
+                      <IconButton
+                        className={`${buttonClassname} ${styles.iconButton}`}
+                        disabled={loading}
+                        onClick={handleButtonClick}
+                      >
+                        <RemoveRedEyeIcon size="small" />
+                      </IconButton>
+                    </Tooltip>
+                    {loading && (
+                      <CircularProgress
+                        size={68}
+                        className={styles.buttonProgress}
+                      />
+                    )}
+                  </Grid>
                 </Grid>
-                <Grid item className={styles.wrapper}>
-                  <Button
-                    variant="outlined"
-                    className={buttonClassname}
-                    disabled={loading}
-                    onClick={handleButtonClick}
-                  >
-                    Detect
-                    <RemoveRedEyeIcon
-                      className={styles.rightIcon}
-                      size="small"
-                    />
-                  </Button>
-                  {loading && (
-                    <CircularProgress
-                      size={24}
-                      className={styles.buttonProgress}
-                    />
-                  )}
-                </Grid>
-              </Grid>
+              </Box>
             </Box>
-          </Grid>
+          </Box>
         </Box>
       </Box>
     </SectionContainer>
