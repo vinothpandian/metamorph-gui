@@ -1,12 +1,16 @@
 import React from "react";
 import { Grid, Box, CircularProgress, Tooltip } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
+import ToggleButton from "@material-ui/lab/ToggleButton";
 import { makeStyles } from "@material-ui/styles";
-import LoopIcon from "@material-ui/icons/Loop";
+import SystemUpdateIcon from "@material-ui/icons/SystemUpdate";
 import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye";
+import CreateIcon from "@material-ui/icons/Create";
+import CropPortraitIcon from "@material-ui/icons/CropPortrait";
 import clsx from "clsx";
-import { green } from "@material-ui/core/colors";
 import domToImage from "dom-to-image";
+import ReactSketchCanvas from "react-sketch-canvas";
+
 import SectionContainer from "../../components/SectionContainer";
 import Information from "../../components/Information";
 import { useGridStyles, useEmphasisStyles } from "../../styles";
@@ -21,12 +25,8 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     width: "100%",
     display: "grid",
-    gridTemplateColumns: "1fr 1.25fr 0.5fr 1fr",
+    gridTemplateColumns: "0.5fr 1.5fr 1.5fr 0.5fr",
     gridTemplateRows: "1fr",
-    [theme.breakpoints.down("sm")]: {
-      gridTemplateColumns: "1fr 2fr 1fr 1fr"
-    },
-
     gridTemplateAreas: '". sketchArea buttonArea ."'
   },
   sketchArea: {
@@ -37,13 +37,21 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center"
   },
   buttonArea: {
+    marginLeft: "1rem",
     gridArea: "buttonArea",
     position: "relative",
     display: "flex",
+    direction: "column",
     justifyContent: "flex-end",
     alignItems: "center"
   },
   iconButton: {
+    color: "black",
+    fontSize: "0.25rem",
+    border: "1px solid #555"
+  },
+  circleButton: {
+    borderRadius: "50%",
     color: "black",
     fontSize: "0.25rem",
     border: "1px solid #555"
@@ -93,6 +101,11 @@ const TryItOut = () => {
   const samples = [sample0, sample1];
   const [sample, setSample] = React.useState(0);
 
+  const canvasRef = React.createRef(null);
+
+  const [draw, setDraw] = React.useState(true);
+  const [erase, setErase] = React.useState(false);
+
   const imageRef = React.useRef(null);
   const boxRef = React.useRef(null);
 
@@ -102,6 +115,7 @@ const TryItOut = () => {
   const [boxes, setBoxes] = React.useState([]);
 
   const loadNextImage = () => {
+    setDraw(false);
     setBoxes([]);
     setLoading(false);
     setSuccess(false);
@@ -118,8 +132,20 @@ const TryItOut = () => {
     setSuccess(false);
     setLoading(true);
 
-    const dataURI = await domToImage.toJpeg(imageRef.current);
+    const getDataURI = async () => {
+      if (draw) {
+        const URI = await canvasRef.current.exportImage("jpeg");
+        return URI;
+      }
+
+      const URI = domToImage.toJpeg(imageRef.current);
+      return URI;
+    };
+
+    const dataURI = await getDataURI();
+
     const blob = await (await fetch(dataURI)).blob();
+
     const fileData = new File([blob], samples[sample]);
 
     const minimumProbability = 0.8;
@@ -140,11 +166,17 @@ const TryItOut = () => {
       console.error(error.message);
     }
 
-    const imageRect = imageRef.current.getBoundingClientRect();
-    const boxRect = boxRef.current.getBoundingClientRect();
+    let verticalOffset = 0;
+    let horizontalOffset = 0;
 
-    const verticalOffset = imageRect.top - boxRect.top;
-    const horizontalOffset = imageRect.left - boxRect.left;
+    if (!draw) {
+      const imageRect = imageRef.current.getBoundingClientRect();
+
+      const boxRect = boxRef.current.getBoundingClientRect();
+
+      verticalOffset = imageRect.top - boxRect.top;
+      horizontalOffset = imageRect.left - boxRect.left;
+    }
 
     setBoxes(
       results.map(result => (
@@ -159,7 +191,7 @@ const TryItOut = () => {
 
     setSuccess(true);
     setLoading(false);
-  }, [loading, sample, samples]);
+  }, [canvasRef, draw, loading, sample, samples]);
 
   return (
     <SectionContainer gradientBackground>
@@ -206,13 +238,28 @@ const TryItOut = () => {
                 display="flex"
                 justifyContent="center"
                 ref={boxRef}
+                overflow="hidden"
               >
-                <img
-                  className={styles.image}
-                  ref={imageRef}
-                  src={samples[sample]}
-                  alt="Sample Lo-Fi sketch"
-                />
+                {draw ? (
+                  <ReactSketchCanvas
+                    ref={canvasRef}
+                    allowOnlyPointerType="all"
+                    strokeWidth={4}
+                    strokeColor="black"
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      borderRadius: "1rem"
+                    }}
+                  />
+                ) : (
+                  <img
+                    className={styles.image}
+                    ref={imageRef}
+                    src={samples[sample]}
+                    alt="Sample Lo-Fi sketch"
+                  />
+                )}
                 {boxes}
               </Box>
             </Box>
@@ -222,26 +269,70 @@ const TryItOut = () => {
                 height={["85%", "75%", "75%", "85%"]}
                 width="100%"
               >
-                <Grid container justify="center" spacing={2}>
+                <Grid container direction="column" wrap="nowrap" spacing={2}>
+                  <Grid item container direction="row" spacing={2}>
+                    <Grid item>
+                      <Tooltip title="Draw" placement="top">
+                        <>
+                          <IconButton
+                            onClick={() => {
+                              setBoxes([]);
+                              setLoading(false);
+                              setSuccess(false);
+                              setDraw(true);
+                            }}
+                            disabled={draw}
+                            className={styles.iconButton}
+                          >
+                            <CreateIcon size="small" />
+                          </IconButton>
+                        </>
+                      </Tooltip>
+                    </Grid>
+                    {draw && (
+                      <Grid item>
+                        <Tooltip title="Erase" placement="top">
+                          <>
+                            <ToggleButton
+                              value="check"
+                              selected={erase}
+                              onClick={() => {
+                                setErase(!erase);
+                                canvasRef.current.eraseMode(!erase);
+                              }}
+                              className={styles.circleButton}
+                            >
+                              <CropPortraitIcon size="small" />
+                            </ToggleButton>
+                          </>
+                        </Tooltip>
+                      </Grid>
+                    )}
+                  </Grid>
                   <Grid item>
-                    <Tooltip title="Load a sample" placement="right">
-                      <IconButton
-                        onClick={loadNextImage}
-                        className={styles.iconButton}
-                      >
-                        <LoopIcon size="small" />
-                      </IconButton>
+                    <Tooltip title="Load a sample" placement="bottom">
+                      <>
+                        <IconButton
+                          onClick={loadNextImage}
+                          disabled={!draw}
+                          className={styles.iconButton}
+                        >
+                          <SystemUpdateIcon size="small" />
+                        </IconButton>
+                      </>
                     </Tooltip>
                   </Grid>
                   <Grid item className={styles.wrapper}>
-                    <Tooltip title="Detect" placement="right">
-                      <IconButton
-                        className={`${buttonClassname} ${styles.iconButton}`}
-                        disabled={loading || success}
-                        onClick={handleButtonClick}
-                      >
-                        <RemoveRedEyeIcon size="small" />
-                      </IconButton>
+                    <Tooltip title="Detect" placement="bottom">
+                      <>
+                        <IconButton
+                          className={`${buttonClassname} ${styles.iconButton} ${styles.buttonMargin}`}
+                          disabled={loading || success}
+                          onClick={handleButtonClick}
+                        >
+                          <RemoveRedEyeIcon size="small" />
+                        </IconButton>
+                      </>
                     </Tooltip>
                     {loading && (
                       <CircularProgress
