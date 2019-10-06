@@ -60,23 +60,26 @@ const useStyles = makeStyles(theme => ({
     position: "relative"
   },
   buttonSuccess: {
-    backgroundColor: green[500],
-    "&:hover": {
-      backgroundColor: green[700]
+    "&:disabled": {
+      backgroundColor: green[300]
     }
   },
   buttonProgress: {
     color: green[500],
     position: "absolute",
-    top: -6,
-    left: -6,
-    zIndex: 1
+    top: 4,
+    left: 4
   }
 }));
 
 const links = [
   {
     id: 1,
+    href: "https://api.metamorph.designwitheve.com/docs/",
+    name: "Check our Web API"
+  },
+  {
+    id: 2,
     href: "https://git.designwitheve.com/eve/MetaMorph",
     name: "Check our code repository"
   }
@@ -100,6 +103,8 @@ const TryItOut = () => {
 
   const loadNextImage = () => {
     setBoxes([]);
+    setLoading(false);
+    setSuccess(false);
     setSample(Math.ceil((sample + 1) % samples.length));
   };
 
@@ -229,7 +234,7 @@ const TryItOut = () => {
                     <Tooltip title="Detect">
                       <IconButton
                         className={`${buttonClassname} ${styles.iconButton}`}
-                        disabled={loading}
+                        disabled={loading || success}
                         onClick={handleButtonClick}
                       >
                         <RemoveRedEyeIcon size="small" />
@@ -237,7 +242,7 @@ const TryItOut = () => {
                     </Tooltip>
                     {loading && (
                       <CircularProgress
-                        size={68}
+                        size={58}
                         className={styles.buttonProgress}
                       />
                     )}

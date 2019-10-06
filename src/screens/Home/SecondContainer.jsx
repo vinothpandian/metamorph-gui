@@ -37,7 +37,6 @@ const SecondContainer = () => {
           rgba(135, 163, 48, 0.8),
           #87A330
         )`}
-      // solidBackground="#87A330"
       fullPage
       overflowing
     >
@@ -68,7 +67,7 @@ const SecondContainer = () => {
           <p>
             MetaMorph was trained using 5,906 UI element sketches of 19 Google
             material design UI elements and 125,000 synthetically generated low
-            fidelity sketches.
+            fidelity sketches
           </p>
         </InfoBox>
         <InfoBox title="Web API">
