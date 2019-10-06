@@ -6,7 +6,6 @@ import LoopIcon from "@material-ui/icons/Loop";
 import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye";
 import clsx from "clsx";
 import { green } from "@material-ui/core/colors";
-import Axios from "axios";
 import domToImage from "dom-to-image";
 import SectionContainer from "../../components/SectionContainer";
 import Information from "../../components/Information";
@@ -22,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     width: "100%",
     display: "grid",
-    gridTemplateColumns: "1fr 1.5fr 0.5fr 1fr",
+    gridTemplateColumns: "1fr 1.25fr 0.5fr 1fr",
     gridTemplateRows: "1fr",
     [theme.breakpoints.down("sm")]: {
       gridTemplateColumns: "1fr 2fr 1fr 1fr"
@@ -45,27 +44,28 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center"
   },
   iconButton: {
+    color: "black",
     fontSize: "0.25rem",
-    border: "1px solid #aaa"
+    border: "1px solid #555"
   },
   shadow: {
-    boxShadow: "0px 0.875rem 0.875rem rgba(0,0,0,0.25)"
+    boxShadow: "0px 0.5625rem 1.0625rem 0.5rem  rgba(0,0,0,0.20)"
   },
   image: {
     borderRadius: "0.875rem",
-    width: "100%",
-    height: "auto"
+    maxWidth: "100%",
+    maxHeight: "100%"
   },
   wrapper: {
     position: "relative"
   },
   buttonSuccess: {
     "&:disabled": {
-      backgroundColor: green[300]
+      backgroundColor: "#9FB559"
     }
   },
   buttonProgress: {
-    color: green[500],
+    color: "#9FB559",
     position: "absolute",
     top: 4,
     left: 4
@@ -128,15 +128,17 @@ const TryItOut = () => {
     formData.append("image", fileData);
     formData.append("minimum_probability", minimumProbability);
 
-    const results = await Axios.post(process.env.REACT_APP_URL, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    })
-      .then(response => response.data)
-      .catch(err => {
-        throw err;
+    let results = [];
+    try {
+      const response = await fetch(process.env.REACT_APP_URL, {
+        method: "POST",
+        body: formData
       });
+
+      results = await response.json();
+    } catch (error) {
+      console.error(error.message);
+    }
 
     const imageRect = imageRef.current.getBoundingClientRect();
     const boxRect = boxRef.current.getBoundingClientRect();
@@ -186,18 +188,19 @@ const TryItOut = () => {
               <Box
                 position="absolute"
                 border="1px solid #000"
-                height={["70%", "50%", "50%", "70%"]}
+                height={["85%", "75%", "75%", "85%"]}
                 width="100%"
                 borderRadius="0.875rem"
-                style={{ transform: "rotate(-0.2deg)" }}
+                style={{ transform: "rotate(-0.5deg)" }}
                 className={styles.shadow}
               />
               <Box
                 position="absolute"
                 border="1px solid #000"
-                height={["65%", "45%", "45%", "65%"]}
-                m={-0.25}
-                width="90%"
+                height={["75%", "65%", "65%", "75%"]}
+                m={-0.1}
+                mt={[-0.8, -1.5]}
+                width="93%"
                 borderRadius="0.875rem"
                 bgcolor="white"
                 display="flex"
@@ -216,12 +219,12 @@ const TryItOut = () => {
             <Box className={styles.buttonArea}>
               <Box
                 position="absolute"
-                height={["70%", "50%", "50%", "70%"]}
+                height={["85%", "75%", "75%", "85%"]}
                 width="100%"
               >
-                <Grid container justify="flex-end" spacing={2}>
+                <Grid container justify="center" spacing={2}>
                   <Grid item>
-                    <Tooltip title="Load a sample">
+                    <Tooltip title="Load a sample" placement="right">
                       <IconButton
                         onClick={loadNextImage}
                         className={styles.iconButton}
@@ -231,7 +234,7 @@ const TryItOut = () => {
                     </Tooltip>
                   </Grid>
                   <Grid item className={styles.wrapper}>
-                    <Tooltip title="Detect">
+                    <Tooltip title="Detect" placement="right">
                       <IconButton
                         className={`${buttonClassname} ${styles.iconButton}`}
                         disabled={loading || success}
