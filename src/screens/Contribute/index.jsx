@@ -1,20 +1,12 @@
 import React from "react";
-import {
-  Grid,
-  Box,
-  Link,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon
-} from "@material-ui/core";
-import LaunchOutlinedIcon from "@material-ui/icons/LaunchOutlined";
+import { Grid, Box } from "@material-ui/core";
 
 import ContributeImage from "../../assets/images/contribute.png";
 import SectionContainer from "../../components/SectionContainer";
 import DisplayImage from "../../components/DisplayImage";
 import Information from "../../components/Information";
 import { useGridStyles, useEmphasisStyles } from "../../styles";
+import ListLinks from "../../components/ListLinks/index";
 
 const links = [
   {
@@ -28,21 +20,6 @@ const links = [
     name: "Sketching Low Fidelity prototypes"
   }
 ];
-
-const list = links.map(link => (
-  <ListItem key={link.id}>
-    <ListItemIcon>
-      <LaunchOutlinedIcon />
-    </ListItemIcon>
-    <ListItemText>
-      <Information>
-        <Link rel="noopener" target="_blank" color="secondary" href={link.href}>
-          {link.name}
-        </Link>
-      </Information>
-    </ListItemText>
-  </ListItem>
-));
 
 const Contribute = () => {
   const gridStyles = useGridStyles();
@@ -60,7 +37,7 @@ const Contribute = () => {
                   UI Sketch Dataset
                 </span>
                 <span> by </span>
-                <List dense>{list}</List>
+                <ListLinks links={links} />
               </Information>
             </Grid>
           </Grid>
