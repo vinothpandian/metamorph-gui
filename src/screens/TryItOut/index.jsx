@@ -7,9 +7,14 @@ import SystemUpdateIcon from "@material-ui/icons/SystemUpdate";
 import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye";
 import CreateIcon from "@material-ui/icons/Create";
 import CropPortraitIcon from "@material-ui/icons/CropPortrait";
+import ReplayIcon from "@material-ui/icons/Replay";
+import GestureIcon from "@material-ui/icons/Gesture";
 import clsx from "clsx";
 import domToImage from "dom-to-image";
 import ReactSketchCanvas from "react-sketch-canvas";
+
+import Pencil from "../../assets/images/pencil.png";
+import Erase from "../../assets/images/erase.png";
 
 import SectionContainer from "../../components/SectionContainer";
 import Information from "../../components/Information";
@@ -20,65 +25,76 @@ import sample1 from "../../assets/images/samples/lofi-1.jpg";
 import DetectionBox from "../../components/DetectionBox";
 import ListLinks from "../../components/ListLinks";
 
-const useStyles = makeStyles(theme => ({
-  sketchGrid: {
-    height: "100%",
-    width: "100%",
-    display: "grid",
-    gridTemplateColumns: "0.5fr 1.5fr 1.5fr 0.5fr",
-    gridTemplateRows: "1fr",
-    gridTemplateAreas: '". sketchArea buttonArea ."'
-  },
-  sketchArea: {
-    gridArea: "sketchArea",
-    position: "relative",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  buttonArea: {
-    marginLeft: "1rem",
-    gridArea: "buttonArea",
-    position: "relative",
-    display: "flex",
-    direction: "column",
-    justifyContent: "flex-end",
-    alignItems: "center"
-  },
-  iconButton: {
-    color: "black",
-    fontSize: "0.25rem",
-    border: "1px solid #555"
-  },
-  circleButton: {
-    borderRadius: "50%",
-    color: "black",
-    fontSize: "0.25rem",
-    border: "1px solid #555"
-  },
-  shadow: {
-    boxShadow: "0px 0.5625rem 1.0625rem 0.5rem  rgba(0,0,0,0.20)"
-  },
-  image: {
-    borderRadius: "0.875rem",
-    maxWidth: "100%",
-    maxHeight: "100%"
-  },
-  wrapper: {
-    position: "relative"
-  },
-  buttonSuccess: {
-    "&:disabled": {
-      backgroundColor: "#9FB559"
+const useStyles = makeStyles(() => {
+  const PencilPointer = `url(${Pencil}) 0 24, pointer`;
+  const ErasePointer = `url(${Erase}) 12 12, auto`;
+
+  return {
+    sketchGrid: {
+      height: "100%",
+      width: "100%",
+      display: "grid",
+      gridTemplateColumns: "0.5fr 1.5fr 1.5fr 0.5fr",
+      gridTemplateRows: "1fr",
+      gridTemplateAreas: '". sketchArea buttonArea ."'
+    },
+    sketchArea: {
+      gridArea: "sketchArea",
+      position: "relative",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    buttonArea: {
+      marginLeft: "1rem",
+      gridArea: "buttonArea",
+      position: "relative",
+      display: "flex",
+      direction: "column",
+      justifyContent: "flex-end",
+      alignItems: "center"
+    },
+    pencilPointer: {
+      cursor: PencilPointer
+    },
+    erasePointer: {
+      cursor: ErasePointer
+    },
+    iconButton: {
+      color: "black",
+      fontSize: "0.25rem",
+      border: "1px solid #555"
+    },
+    circleButton: {
+      borderRadius: "50%",
+      color: "black",
+      fontSize: "0.25rem",
+      border: "1px solid #555"
+    },
+    shadow: {
+      boxShadow: "0px 0.5625rem 1.0625rem 0.5rem  rgba(0,0,0,0.20)"
+    },
+    image: {
+      borderRadius: "0.875rem",
+      maxWidth: "100%",
+      maxHeight: "100%"
+    },
+    wrapper: {
+      position: "relative"
+    },
+    buttonSuccess: {
+      "&:disabled": {
+        backgroundColor: "#9FB559"
+      }
+    },
+    buttonProgress: {
+      color: "#9FB559",
+      position: "absolute",
+      top: 4,
+      left: 4
     }
-  },
-  buttonProgress: {
-    color: "#9FB559",
-    position: "absolute",
-    top: 4,
-    left: 4
-  }
-}));
+  };
+});
 
 const links = [
   {
@@ -94,10 +110,6 @@ const links = [
 ];
 
 const TryItOut = () => {
-  const styles = useStyles();
-  const gridStyles = useGridStyles();
-  const emphasisStyles = useEmphasisStyles();
-
   const samples = [sample0, sample1];
   const [sample, setSample] = React.useState(0);
 
@@ -121,10 +133,6 @@ const TryItOut = () => {
     setSuccess(false);
     setSample(Math.ceil((sample + 1) % samples.length));
   };
-
-  const buttonClassname = clsx({
-    [styles.buttonSuccess]: success
-  });
 
   const handleButtonClick = React.useCallback(async () => {
     if (loading) return;
@@ -193,6 +201,14 @@ const TryItOut = () => {
     setLoading(false);
   }, [canvasRef, draw, loading, sample, samples]);
 
+  const styles = useStyles(erase);
+  const gridStyles = useGridStyles();
+  const emphasisStyles = useEmphasisStyles();
+
+  const buttonClassname = clsx({
+    [styles.buttonSuccess]: success
+  });
+
   return (
     <SectionContainer gradientBackground>
       <Box className={gridStyles.gridContainer}>
@@ -239,6 +255,10 @@ const TryItOut = () => {
                 justifyContent="center"
                 ref={boxRef}
                 overflow="hidden"
+                className={clsx({
+                  [styles.pencilPointer]: !erase,
+                  [styles.erasePointer]: erase
+                })}
               >
                 {draw ? (
                   <ReactSketchCanvas
@@ -284,29 +304,55 @@ const TryItOut = () => {
                             disabled={draw}
                             className={styles.iconButton}
                           >
-                            <CreateIcon size="small" />
+                            <GestureIcon size="small" />
                           </IconButton>
                         </>
                       </Tooltip>
                     </Grid>
                     {draw && (
-                      <Grid item>
-                        <Tooltip title="Erase" placement="top">
-                          <>
-                            <ToggleButton
-                              value="check"
-                              selected={erase}
-                              onClick={() => {
-                                setErase(!erase);
-                                canvasRef.current.eraseMode(!erase);
-                              }}
-                              className={styles.circleButton}
-                            >
-                              <CropPortraitIcon size="small" />
-                            </ToggleButton>
-                          </>
-                        </Tooltip>
-                      </Grid>
+                      <>
+                        <Grid item>
+                          <Tooltip title="Erase" placement="top">
+                            <>
+                              <ToggleButton
+                                value="check"
+                                selected={erase}
+                                onClick={() => {
+                                  setBoxes([]);
+                                  setLoading(false);
+                                  setSuccess(false);
+                                  setErase(!erase);
+                                  canvasRef.current.eraseMode(!erase);
+                                }}
+                                className={styles.circleButton}
+                              >
+                                {erase ? (
+                                  <CreateIcon size="small" />
+                                ) : (
+                                  <CropPortraitIcon size="small" />
+                                )}
+                              </ToggleButton>
+                            </>
+                          </Tooltip>
+                        </Grid>
+                        <Grid item>
+                          <Tooltip title="Clear Canvas" placement="top">
+                            <>
+                              <IconButton
+                                onClick={() => {
+                                  setBoxes([]);
+                                  setLoading(false);
+                                  setSuccess(false);
+                                  canvasRef.current.clearCanvas();
+                                }}
+                                className={styles.circleButton}
+                              >
+                                <ReplayIcon size="small" />
+                              </IconButton>
+                            </>
+                          </Tooltip>
+                        </Grid>
+                      </>
                     )}
                   </Grid>
                   <Grid item>
