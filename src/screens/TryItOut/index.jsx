@@ -115,7 +115,7 @@ const TryItOut = () => {
 
   const canvasRef = React.createRef(null);
 
-  const [draw, setDraw] = React.useState(true);
+  const [draw, setDraw] = React.useState(false);
   const [erase, setErase] = React.useState(false);
 
   const imageRef = React.useRef(null);
@@ -290,6 +290,18 @@ const TryItOut = () => {
                 width="100%"
               >
                 <Grid container direction="column" wrap="nowrap" spacing={2}>
+                  <Grid item>
+                    <Tooltip title="Load a sample" placement="right">
+                      <IconButton
+                        component="div"
+                        onClick={loadNextImage}
+                        disabled={!draw}
+                        className={styles.iconButton}
+                      >
+                        <SystemUpdateIcon size="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </Grid>
                   <Grid item container direction="row" spacing={2}>
                     <Grid item>
                       <Tooltip title="Draw" placement="right">
@@ -349,18 +361,6 @@ const TryItOut = () => {
                         </Grid>
                       </>
                     )}
-                  </Grid>
-                  <Grid item>
-                    <Tooltip title="Load a sample" placement="right">
-                      <IconButton
-                        component="div"
-                        onClick={loadNextImage}
-                        disabled={!draw}
-                        className={styles.iconButton}
-                      >
-                        <SystemUpdateIcon size="small" />
-                      </IconButton>
-                    </Tooltip>
                   </Grid>
                   <Grid item className={styles.wrapper}>
                     <Tooltip title="Detect" placement="right">
