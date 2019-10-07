@@ -37,7 +37,6 @@ const SecondContainer = () => {
           rgba(135, 163, 48, 0.8),
           #87A330
         )`}
-      fullPage
       overflowing
     >
       <Box className={styles.gridContainer}>

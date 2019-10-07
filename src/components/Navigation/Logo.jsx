@@ -9,6 +9,9 @@ const useStyles = makeStyles(theme => ({
   common: {
     fontFamily: "Roboto Mono",
     fontSize: "3rem",
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "2.5rem"
+    },
     fontWeight: 100
   },
   meta: {

@@ -5,12 +5,12 @@ import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles(theme => ({
-  root: ({ gradientBackground, solidBackground, fullPage, overflowing }) => {
-    const assignedHeight = fullPage ? "100vh" : "calc(100vh - 5.5rem)";
-    const height = overflowing ? "auto" : assignedHeight;
-
+  root: ({ gradientBackground, solidBackground, overflowing }) => {
     return {
-      height,
+      display: "flex",
+      flex: "1 0 auto",
+      height: overflowing ? "auto" : "calc(100% - 5.5rem)",
+      minHeight: overflowing ? "100%" : 0,
       background: gradientBackground
         ? `linear-gradient(
         180deg,
@@ -27,14 +27,12 @@ const SectionContainer = ({
   children,
   gradientBackground,
   solidBackground,
-  fullPage,
   overflowing,
   ...props
 }) => {
   const styles = useStyles({
     gradientBackground,
     solidBackground,
-    fullPage,
     overflowing
   });
 
@@ -52,7 +50,6 @@ const SectionContainer = ({
 
 SectionContainer.defaultProps = {
   solidBackground: undefined,
-  fullPage: false,
   gradientBackground: false,
   overflowing: false
 };
@@ -61,7 +58,6 @@ SectionContainer.propTypes = {
   children: PropTypes.node.isRequired,
   gradientBackground: PropTypes.bool,
   solidBackground: PropTypes.string,
-  fullPage: PropTypes.bool,
   overflowing: PropTypes.bool
 };
 

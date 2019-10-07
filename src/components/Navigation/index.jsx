@@ -16,7 +16,7 @@ const Navigation = () => {
   };
 
   return (
-    <Box display="flex" width="100%" flexDirection="column">
+    <Box display="flex" flex="1 0 auto" flexDirection="column">
       <Box
         display="flex"
         width="100%"

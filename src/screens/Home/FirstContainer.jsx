@@ -103,8 +103,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const calc = (x, y) => [x - window.innerWidth / 2, y - window.innerHeight / 2];
-const trans1 = (x, y) => `translate3d(${x / 10}px,${y / 10}px,0)`;
-const trans2 = (x, y) => `translate3d(${x / 8}px,${y / 8}px,0)`;
+const trans1 = (x, y) => `translate3d(${x / 12}px,${y / 10}px,0)`;
+const trans2 = (x, y) => `translate3d(${x / 10}px,${y / 8}px,0)`;
 
 const FirstContainer = () => {
   const styles = useStyles();
@@ -160,7 +160,7 @@ const FirstContainer = () => {
             justifyContent="center"
             alignItems="center"
             height={["70%", "50%", "50%", "70%"]}
-            width={["70%", "50%", "55%", "40%"]}
+            width={["70%", "40%", "40%", "40%"]}
           >
             <animated.img
               className={`${styles.common} ${styles.card1}`}
@@ -177,7 +177,7 @@ const FirstContainer = () => {
             my={[-1.5]}
             mx={[2]}
             height={["70%", "50%", "50%", "70%"]}
-            width={["70%", "50%", "55%", "40%"]}
+            width={["70%", "40%", "40%", "40%"]}
             className={styles.card2Container}
           >
             <animated.img
