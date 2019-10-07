@@ -12,14 +12,15 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     display: "grid",
     gridTemplateColumns: "1fr",
-    gridTemplateRows: "1fr 2fr 1fr",
+    gridTemplateRows: "1fr 1fr 1fr",
     gridTemplateAreas: '"." "infoArea" "."',
     [theme.breakpoints.down("md")]: {
-      height: "auto",
+      height: "100%",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      padding: "1rem"
+      padding: "1rem",
+      borderTop: "1px solid #84A02E"
     }
   },
   infoArea: {
@@ -30,8 +31,8 @@ const useStyles = makeStyles(theme => ({
       width: "100%"
     },
     display: "grid",
-    gridTemplateColumns: "0.5fr 1.5fr",
-    gridTemplateRows: "0.5fr 1.5fr",
+    gridTemplateColumns: "0.25fr 1fr",
+    gridTemplateRows: "0.25fr 1fr",
     gridTemplateAreas: '"iconArea titleArea" ". contentArea"'
   },
   iconArea: {
