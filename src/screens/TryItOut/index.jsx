@@ -236,7 +236,7 @@ const TryItOut = () => {
               <Box
                 position="absolute"
                 border="1px solid #000"
-                height={["85%", "75%", "75%", "85%"]}
+                height={["85%", "75%", "75%", "85%", "75%"]}
                 width="100%"
                 borderRadius="0.875rem"
                 style={{ transform: "rotate(-0.5deg)" }}
@@ -245,7 +245,7 @@ const TryItOut = () => {
               <Box
                 position="absolute"
                 border="1px solid #000"
-                height={["75%", "65%", "65%", "75%"]}
+                height={["75%", "65%", "65%", "75%", "65%"]}
                 m={-0.1}
                 mt={[-0.8, -1.5]}
                 width="93%"
@@ -286,7 +286,7 @@ const TryItOut = () => {
             <Box className={styles.buttonArea}>
               <Box
                 position="absolute"
-                height={["85%", "75%", "75%", "85%"]}
+                height={["85%", "75%", "75%", "85%", "75%"]}
                 width="100%"
               >
                 <Grid container direction="column" wrap="nowrap" spacing={2}>

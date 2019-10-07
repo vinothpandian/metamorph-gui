@@ -6,7 +6,7 @@ import SectionContainer from "../../components/SectionContainer";
 import DisplayImage from "../../components/DisplayImage";
 import Information from "../../components/Information";
 import { useGridStyles, useEmphasisStyles } from "../../styles";
-import ListLinks from "../../components/ListLinks/index";
+import ListLinks from "../../components/ListLinks";
 
 const links = [
   {

@@ -7,6 +7,7 @@ export const useGridStyles = makeStyles(theme => ({
     gridTemplateRows: "1fr",
     gridTemplateAreas: ". .",
     height: "100%",
+    width: "100%",
     [theme.breakpoints.down("xs")]: {
       gridTemplateColumns: "1fr",
       gridTemplateRows: "1fr 1fr",

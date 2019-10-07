@@ -11,7 +11,10 @@ const useStyles = makeStyles(theme => ({
   errorCode: {
     paddingRight: theme.spacing(2),
     marginRight: theme.spacing(2),
-    borderRight: `0.0625rem solid ${theme.palette.grey["800"]}`
+    borderRight: `0.0625rem solid ${theme.palette.grey["800"]}`,
+    [theme.breakpoints.down("xs")]: {
+      borderRight: "none"
+    }
   }
 }));
 
