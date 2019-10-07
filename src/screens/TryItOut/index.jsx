@@ -292,93 +292,86 @@ const TryItOut = () => {
                 <Grid container direction="column" wrap="nowrap" spacing={2}>
                   <Grid item container direction="row" spacing={2}>
                     <Grid item>
-                      <Tooltip title="Draw" placement="top">
-                        <>
-                          <IconButton
-                            onClick={() => {
-                              setBoxes([]);
-                              setLoading(false);
-                              setSuccess(false);
-                              setDraw(true);
-                            }}
-                            disabled={draw}
-                            className={styles.iconButton}
-                          >
-                            <GestureIcon size="small" />
-                          </IconButton>
-                        </>
+                      <Tooltip title="Draw" placement="right">
+                        <IconButton
+                          component="div"
+                          onClick={() => {
+                            setBoxes([]);
+                            setLoading(false);
+                            setSuccess(false);
+                            setDraw(true);
+                          }}
+                          disabled={draw}
+                          className={styles.iconButton}
+                        >
+                          <GestureIcon size="small" />
+                        </IconButton>
                       </Tooltip>
                     </Grid>
                     {draw && (
                       <>
                         <Grid item>
-                          <Tooltip title="Erase" placement="top">
-                            <>
-                              <ToggleButton
-                                value="check"
-                                selected={erase}
-                                onClick={() => {
-                                  setBoxes([]);
-                                  setLoading(false);
-                                  setSuccess(false);
-                                  setErase(!erase);
-                                  canvasRef.current.eraseMode(!erase);
-                                }}
-                                className={styles.circleButton}
-                              >
-                                {erase ? (
-                                  <CreateIcon size="small" />
-                                ) : (
-                                  <CropPortraitIcon size="small" />
-                                )}
-                              </ToggleButton>
-                            </>
+                          <Tooltip title="Erase" placement="right">
+                            <ToggleButton
+                              value="check"
+                              selected={erase}
+                              onClick={() => {
+                                setBoxes([]);
+                                setLoading(false);
+                                setSuccess(false);
+                                setErase(!erase);
+                                canvasRef.current.eraseMode(!erase);
+                              }}
+                              className={styles.circleButton}
+                            >
+                              {erase ? (
+                                <CreateIcon size="small" />
+                              ) : (
+                                <CropPortraitIcon size="small" />
+                              )}
+                            </ToggleButton>
                           </Tooltip>
                         </Grid>
                         <Grid item>
-                          <Tooltip title="Clear Canvas" placement="top">
-                            <>
-                              <IconButton
-                                onClick={() => {
-                                  setBoxes([]);
-                                  setLoading(false);
-                                  setSuccess(false);
-                                  canvasRef.current.clearCanvas();
-                                }}
-                                className={styles.circleButton}
-                              >
-                                <ReplayIcon size="small" />
-                              </IconButton>
-                            </>
+                          <Tooltip title="Clear Canvas" placement="right">
+                            <IconButton
+                              onClick={() => {
+                                setBoxes([]);
+                                setLoading(false);
+                                setSuccess(false);
+                                canvasRef.current.clearCanvas();
+                              }}
+                              className={styles.circleButton}
+                            >
+                              <ReplayIcon size="small" />
+                            </IconButton>
                           </Tooltip>
                         </Grid>
                       </>
                     )}
                   </Grid>
                   <Grid item>
-                    <Tooltip title="Load a sample" placement="bottom">
-                      <>
-                        <IconButton
-                          onClick={loadNextImage}
-                          disabled={!draw}
-                          className={styles.iconButton}
-                        >
-                          <SystemUpdateIcon size="small" />
-                        </IconButton>
-                      </>
+                    <Tooltip title="Load a sample" placement="right">
+                      <IconButton
+                        component="div"
+                        onClick={loadNextImage}
+                        disabled={!draw}
+                        className={styles.iconButton}
+                      >
+                        <SystemUpdateIcon size="small" />
+                      </IconButton>
                     </Tooltip>
                   </Grid>
                   <Grid item className={styles.wrapper}>
-                    <Tooltip title="Detect" placement="bottom">
-                      <>
-                        <IconButton
-                          className={`${buttonClassname} ${styles.iconButton} ${styles.buttonMargin}`}
-                          disabled={loading || success}
-                          onClick={handleButtonClick}
-                        >
-                          <RemoveRedEyeIcon size="small" />
-                        </IconButton>
-                      </>
+                    <Tooltip title="Detect" placement="right">
+                      <IconButton
+                        component="div"
+                        className={`${buttonClassname} ${styles.iconButton} ${styles.buttonMargin}`}
+                        disabled={loading || success}
+                        onClick={handleButtonClick}
+                      >
+                        <RemoveRedEyeIcon size="small" />
+                      </IconButton>
                     </Tooltip>
                     {loading && (
                       <CircularProgress
