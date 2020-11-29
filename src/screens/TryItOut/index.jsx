@@ -16,6 +16,9 @@ import Erase from "../../assets/images/erase.png";
 import Pencil from "../../assets/images/pencil.png";
 import sample0 from "../../assets/images/samples/lofi-0.jpg";
 import sample1 from "../../assets/images/samples/lofi-1.jpg";
+import sample2 from "../../assets/images/samples/lofi-2.jpg";
+import sample3 from "../../assets/images/samples/lofi-3.jpg";
+import sample4 from "../../assets/images/samples/lofi-4.jpg";
 import DetectionBox from "../../components/DetectionBox";
 import Information from "../../components/Information";
 import ListLinks from "../../components/ListLinks";
@@ -107,7 +110,7 @@ const links = [
 ];
 
 const TryItOut = () => {
-  const samples = [sample0, sample1];
+  const samples = [sample0, sample1, sample2, sample3, sample4];
   const [sample, setSample] = React.useState(0);
 
   const canvasRef = React.createRef(null);
@@ -208,6 +211,10 @@ const TryItOut = () => {
 
   const buttonClassname = clsx({
     [styles.buttonSuccess]: success,
+  });
+
+  import("../../assets/images/samples/lofi-0.jpg").then((data) => {
+    console.log(data);
   });
 
   return (
