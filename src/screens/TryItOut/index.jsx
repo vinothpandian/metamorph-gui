@@ -1,5 +1,7 @@
 import { Box, CircularProgress, Grid, Tooltip } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import CreateIcon from "@material-ui/icons/Create";
 import CropPortraitIcon from "@material-ui/icons/CropPortrait";
 import GestureIcon from "@material-ui/icons/Gesture";
@@ -16,8 +18,6 @@ import Erase from "../../assets/images/erase.png";
 import Pencil from "../../assets/images/pencil.png";
 import sample0 from "../../assets/images/samples/lofi-0.jpg";
 import sample1 from "../../assets/images/samples/lofi-1.jpg";
-import sample2 from "../../assets/images/samples/lofi-2.jpg";
-import sample3 from "../../assets/images/samples/lofi-3.jpg";
 import sample4 from "../../assets/images/samples/lofi-4.jpg";
 import DetectionBox from "../../components/DetectionBox";
 import Information from "../../components/Information";
@@ -36,14 +36,14 @@ const useStyles = makeStyles(() => {
       display: "grid",
       gridTemplateColumns: "0.5fr 1.5fr 1.5fr 0.5fr",
       gridTemplateRows: "1fr",
-      gridTemplateAreas: '". sketchArea buttonArea ."',
+      gridTemplateAreas: '". sketchArea buttonArea ."'
     },
     sketchArea: {
       gridArea: "sketchArea",
       position: "relative",
       display: "flex",
       justifyContent: "center",
-      alignItems: "center",
+      alignItems: "center"
     },
     buttonArea: {
       marginLeft: "1rem",
@@ -52,47 +52,47 @@ const useStyles = makeStyles(() => {
       display: "flex",
       direction: "column",
       justifyContent: "flex-end",
-      alignItems: "center",
+      alignItems: "center"
     },
     pencilPointer: {
-      cursor: PencilPointer,
+      cursor: PencilPointer
     },
     erasePointer: {
-      cursor: ErasePointer,
+      cursor: ErasePointer
     },
     iconButton: {
       color: "black",
       fontSize: "0.25rem",
-      border: "1px solid #555",
+      border: "1px solid #555"
     },
     circleButton: {
       borderRadius: "50%",
       color: "black",
       fontSize: "0.25rem",
-      border: "1px solid #555",
+      border: "1px solid #555"
     },
     shadow: {
-      boxShadow: "0px 0.5625rem 1.0625rem 0.5rem  rgba(0,0,0,0.20)",
+      boxShadow: "0px 0.5625rem 1.0625rem 0.5rem  rgba(0,0,0,0.20)"
     },
     image: {
       borderRadius: "0.875rem",
       maxWidth: "100%",
-      maxHeight: "100%",
+      maxHeight: "100%"
     },
     wrapper: {
-      position: "relative",
+      position: "relative"
     },
     buttonSuccess: {
       "&:disabled": {
-        backgroundColor: "#9FB559",
-      },
+        backgroundColor: "#9FB559"
+      }
     },
     buttonProgress: {
       color: "#9FB559",
       position: "absolute",
       top: 4,
-      left: 4,
-    },
+      left: 4
+    }
   };
 });
 
@@ -100,23 +100,24 @@ const links = [
   {
     id: 1,
     href: "https://api.metamorph.designwitheve.com/docs/",
-    name: "Check our Web API",
+    name: "Check our Web API"
   },
   {
     id: 2,
     href: "https://git.designwitheve.com/eve/MetaMorph",
-    name: "Check our code repository",
-  },
+    name: "Check our code repository"
+  }
 ];
 
 const TryItOut = () => {
-  const samples = [sample0, sample1, sample2, sample3, sample4];
+  const samples = [sample0, sample1, sample4];
   const [sample, setSample] = React.useState(0);
 
   const canvasRef = React.createRef(null);
 
   const [draw, setDraw] = React.useState(false);
   const [erase, setErase] = React.useState(false);
+  const [leftRightButtons, setLeftRightButtons] = React.useState(true);
 
   const imageRef = React.useRef(null);
   const boxRef = React.useRef(null);
@@ -131,7 +132,23 @@ const TryItOut = () => {
     setBoxes([]);
     setLoading(false);
     setSuccess(false);
-    setSample(Math.ceil((sample + 1) % samples.length));
+    setLeftRightButtons(true);
+  };
+
+  const setNextImage = () => {
+    loadNextImage();
+    setSample((sample + 1) % samples.length);
+  };
+
+  const setPrevImage = () => {
+    loadNextImage();
+    const prev = sample - 1;
+    if (prev < 0) {
+      setSample(samples.length - 1);
+      return;
+    }
+
+    setSample(prev);
   };
 
   const handleButtonClick = React.useCallback(async () => {
@@ -167,7 +184,7 @@ const TryItOut = () => {
         `${process.env.REACT_APP_URL}/?minimum_probability=${minimumProbability}`,
         {
           method: "POST",
-          body: formData,
+          body: formData
         }
       );
 
@@ -191,7 +208,7 @@ const TryItOut = () => {
     }
 
     setBoxes(
-      results.map((result) => (
+      results.map(result => (
         <DetectionBox
           key={`${result.name}_${result.position.x}`}
           verticalOffset={verticalOffset}
@@ -210,11 +227,7 @@ const TryItOut = () => {
   const emphasisStyles = useEmphasisStyles();
 
   const buttonClassname = clsx({
-    [styles.buttonSuccess]: success,
-  });
-
-  import("../../assets/images/samples/lofi-0.jpg").then((data) => {
-    console.log(data);
+    [styles.buttonSuccess]: success
   });
 
   return (
@@ -264,8 +277,8 @@ const TryItOut = () => {
                 ref={boxRef}
                 overflow="hidden"
                 className={clsx({
-                  [styles.pencilPointer]: !erase,
-                  [styles.erasePointer]: erase,
+                  [styles.pencilPointer]: !erase && draw,
+                  [styles.erasePointer]: erase && draw
                 })}
               >
                 {draw ? (
@@ -277,7 +290,7 @@ const TryItOut = () => {
                     style={{
                       maxWidth: "100%",
                       maxHeight: "100%",
-                      borderRadius: "1rem",
+                      borderRadius: "1rem"
                     }}
                   />
                 ) : (
@@ -298,17 +311,48 @@ const TryItOut = () => {
                 width="100%"
               >
                 <Grid container direction="column" wrap="nowrap" spacing={2}>
-                  <Grid item>
-                    <Tooltip title="Load a sample" placement="right">
-                      <IconButton
-                        component="div"
-                        onClick={loadNextImage}
-                        disabled={!draw}
-                        className={styles.iconButton}
-                      >
-                        <SystemUpdateIcon size="small" />
-                      </IconButton>
-                    </Tooltip>
+                  <Grid item container direction="row" spacing={2}>
+                    <Grid item>
+                      <Tooltip title="Load a sample" placement="right">
+                        <IconButton
+                          component="div"
+                          onClick={loadNextImage}
+                          disabled={!draw}
+                          className={styles.iconButton}
+                        >
+                          <SystemUpdateIcon size="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Grid>
+                    {leftRightButtons && (
+                      <>
+                        <Grid item>
+                          <Tooltip
+                            title="Load previous sample"
+                            placement="right"
+                          >
+                            <IconButton
+                              component="div"
+                              onClick={setPrevImage}
+                              className={styles.iconButton}
+                            >
+                              <ChevronLeftIcon size="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </Grid>
+                        <Grid item>
+                          <Tooltip title="Load next sample" placement="right">
+                            <IconButton
+                              component="div"
+                              onClick={setNextImage}
+                              className={styles.iconButton}
+                            >
+                              <ChevronRightIcon size="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </Grid>
+                      </>
+                    )}
                   </Grid>
                   <Grid item container direction="row" spacing={2}>
                     <Grid item>
@@ -320,6 +364,7 @@ const TryItOut = () => {
                             setLoading(false);
                             setSuccess(false);
                             setDraw(true);
+                            setLeftRightButtons(false);
                           }}
                           disabled={draw}
                           className={styles.iconButton}

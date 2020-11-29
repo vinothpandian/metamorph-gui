@@ -1,16 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
-
 import { Grid } from "@material-ui/core";
-
 import { makeStyles } from "@material-ui/styles";
+import PropTypes from "prop-types";
+import React from "react";
 
 const useStyles = makeStyles({
   root: {
-    position: "relative"
+    position: "relative",
+    minWidth: "100%",
+    maxWidth: "100%"
   },
   responsive: {
     width: "100%",
+
     height: "auto"
   }
 });
