@@ -1,29 +1,26 @@
-import React from "react";
-import { Grid, Box, CircularProgress, Tooltip } from "@material-ui/core";
+import { Box, CircularProgress, Grid, Tooltip } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import { makeStyles } from "@material-ui/styles";
-import SystemUpdateIcon from "@material-ui/icons/SystemUpdate";
-import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye";
 import CreateIcon from "@material-ui/icons/Create";
 import CropPortraitIcon from "@material-ui/icons/CropPortrait";
-import ReplayIcon from "@material-ui/icons/Replay";
 import GestureIcon from "@material-ui/icons/Gesture";
+import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye";
+import ReplayIcon from "@material-ui/icons/Replay";
+import SystemUpdateIcon from "@material-ui/icons/SystemUpdate";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import domToImage from "dom-to-image";
+import React from "react";
 import ReactSketchCanvas from "react-sketch-canvas";
-
-import Pencil from "../../assets/images/pencil.png";
 import Erase from "../../assets/images/erase.png";
-
-import SectionContainer from "../../components/SectionContainer";
-import Information from "../../components/Information";
-import { useGridStyles, useEmphasisStyles } from "../../styles";
-
+import Pencil from "../../assets/images/pencil.png";
 import sample0 from "../../assets/images/samples/lofi-0.jpg";
 import sample1 from "../../assets/images/samples/lofi-1.jpg";
 import DetectionBox from "../../components/DetectionBox";
+import Information from "../../components/Information";
 import ListLinks from "../../components/ListLinks";
+import SectionContainer from "../../components/SectionContainer";
+import { useEmphasisStyles, useGridStyles } from "../../styles";
 
 const useStyles = makeStyles(() => {
   const PencilPointer = `url(${Pencil}) 0 24, pointer`;
@@ -36,14 +33,14 @@ const useStyles = makeStyles(() => {
       display: "grid",
       gridTemplateColumns: "0.5fr 1.5fr 1.5fr 0.5fr",
       gridTemplateRows: "1fr",
-      gridTemplateAreas: '". sketchArea buttonArea ."'
+      gridTemplateAreas: '". sketchArea buttonArea ."',
     },
     sketchArea: {
       gridArea: "sketchArea",
       position: "relative",
       display: "flex",
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
     },
     buttonArea: {
       marginLeft: "1rem",
@@ -52,47 +49,47 @@ const useStyles = makeStyles(() => {
       display: "flex",
       direction: "column",
       justifyContent: "flex-end",
-      alignItems: "center"
+      alignItems: "center",
     },
     pencilPointer: {
-      cursor: PencilPointer
+      cursor: PencilPointer,
     },
     erasePointer: {
-      cursor: ErasePointer
+      cursor: ErasePointer,
     },
     iconButton: {
       color: "black",
       fontSize: "0.25rem",
-      border: "1px solid #555"
+      border: "1px solid #555",
     },
     circleButton: {
       borderRadius: "50%",
       color: "black",
       fontSize: "0.25rem",
-      border: "1px solid #555"
+      border: "1px solid #555",
     },
     shadow: {
-      boxShadow: "0px 0.5625rem 1.0625rem 0.5rem  rgba(0,0,0,0.20)"
+      boxShadow: "0px 0.5625rem 1.0625rem 0.5rem  rgba(0,0,0,0.20)",
     },
     image: {
       borderRadius: "0.875rem",
       maxWidth: "100%",
-      maxHeight: "100%"
+      maxHeight: "100%",
     },
     wrapper: {
-      position: "relative"
+      position: "relative",
     },
     buttonSuccess: {
       "&:disabled": {
-        backgroundColor: "#9FB559"
-      }
+        backgroundColor: "#9FB559",
+      },
     },
     buttonProgress: {
       color: "#9FB559",
       position: "absolute",
       top: 4,
-      left: 4
-    }
+      left: 4,
+    },
   };
 });
 
@@ -100,13 +97,13 @@ const links = [
   {
     id: 1,
     href: "https://api.metamorph.designwitheve.com/docs/",
-    name: "Check our Web API"
+    name: "Check our Web API",
   },
   {
     id: 2,
     href: "https://git.designwitheve.com/eve/MetaMorph",
-    name: "Check our code repository"
-  }
+    name: "Check our code repository",
+  },
 ];
 
 const TryItOut = () => {
@@ -154,22 +151,26 @@ const TryItOut = () => {
 
     const blob = await (await fetch(dataURI)).blob();
 
-    const fileData = new File([blob], samples[sample]);
+    const fileData = new File([blob], "lo-fi.jpg", { type: "image/jpeg" });
 
-    const minimumProbability = 0.8;
+    const minimumProbability = 0.9;
     const formData = new FormData();
 
     formData.append("image", fileData);
-    formData.append("minimum_probability", minimumProbability);
 
     let results = [];
     try {
-      const response = await fetch(process.env.REACT_APP_URL, {
-        method: "POST",
-        body: formData
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_URL}/?minimum_probability=${minimumProbability}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-      results = await response.json();
+      if (response.status === 200) {
+        results = await response.json();
+      }
     } catch (error) {
       console.error(error.message);
     }
@@ -187,7 +188,7 @@ const TryItOut = () => {
     }
 
     setBoxes(
-      results.map(result => (
+      results.map((result) => (
         <DetectionBox
           key={`${result.name}_${result.position.x}`}
           verticalOffset={verticalOffset}
@@ -199,14 +200,14 @@ const TryItOut = () => {
 
     setSuccess(true);
     setLoading(false);
-  }, [canvasRef, draw, loading, sample, samples]);
+  }, [canvasRef, draw, loading]);
 
   const styles = useStyles(erase);
   const gridStyles = useGridStyles();
   const emphasisStyles = useEmphasisStyles();
 
   const buttonClassname = clsx({
-    [styles.buttonSuccess]: success
+    [styles.buttonSuccess]: success,
   });
 
   return (
@@ -257,7 +258,7 @@ const TryItOut = () => {
                 overflow="hidden"
                 className={clsx({
                   [styles.pencilPointer]: !erase,
-                  [styles.erasePointer]: erase
+                  [styles.erasePointer]: erase,
                 })}
               >
                 {draw ? (
@@ -269,7 +270,7 @@ const TryItOut = () => {
                     style={{
                       maxWidth: "100%",
                       maxHeight: "100%",
-                      borderRadius: "1rem"
+                      borderRadius: "1rem",
                     }}
                   />
                 ) : (
