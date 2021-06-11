@@ -208,7 +208,7 @@ const TryItOut = () => {
     }
 
     setBoxes(
-      results.map(result => (
+      results.objects.map(result => (
         <DetectionBox
           key={`${result.name}_${result.position.x}`}
           verticalOffset={verticalOffset}
