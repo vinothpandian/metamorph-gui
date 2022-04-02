@@ -178,13 +178,17 @@ const TryItOut = () => {
 
     formData.append("image", fileData);
 
-    let results = [];
+    let results = {
+      objects: []
+    };
+    
     try {
       const response = await fetch(
         `${process.env.REACT_APP_URL}/?minimum_probability=${minimumProbability}`,
         {
           method: "POST",
-          body: formData
+          body: formData,
+          mode: "no-cors"
         }
       );
 
@@ -193,7 +197,10 @@ const TryItOut = () => {
       }
     } catch (error) {
       console.error(error.message);
+      return;
     }
+
+    console.log(results);
 
     let verticalOffset = 0;
     let horizontalOffset = 0;
@@ -205,6 +212,11 @@ const TryItOut = () => {
 
       verticalOffset = imageRect.top - boxRect.top;
       horizontalOffset = imageRect.left - boxRect.left;
+    }
+
+    if (Object.keys(results) === 0) {
+      console.error("Nothing found in results", results)
+      return;
     }
 
     setBoxes(
