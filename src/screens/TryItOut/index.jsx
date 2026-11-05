@@ -181,7 +181,7 @@ const TryItOut = () => {
     let results = {
       objects: []
     };
-    
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_URL}/?minimum_probability=${minimumProbability}`,
@@ -215,7 +215,7 @@ const TryItOut = () => {
     }
 
     if (Object.keys(results) === 0) {
-      console.error("Nothing found in results", results)
+      console.error("Nothing found in results", results);
       return;
     }
 

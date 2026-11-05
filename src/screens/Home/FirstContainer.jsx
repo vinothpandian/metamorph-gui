@@ -111,12 +111,12 @@ const FirstContainer = () => {
   const gridStyles = useGridStyles();
   const emphasisStyles = useEmphasisStyles();
 
-  const [props, set] = useSpring(() => ({
+  const [springValues, set] = useSpring(() => ({
     xy: [0, 0],
     config: { mass: 10, tension: 550, friction: 140 }
   }));
 
-  const { xy } = props;
+  const { xy } = springValues;
 
   return (
     <SectionContainer gradientBackground>
